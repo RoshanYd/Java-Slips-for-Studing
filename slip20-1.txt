@@ -1,0 +1,133 @@
+/* Implement a Java program to manage bank accounts using object-oriented
+programming (OOP) concepts like classes, inheritance, encapsulation, and
+polymorphism. Include features like account creation, deposit, withdrawal, and
+balance inquiry.
+*/
+
+import java.util.Scanner;
+
+class Account
+{
+    int accNo;
+    String name;
+    double balance;
+
+    void createAccount()
+    {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("Enter Account Number:");
+        accNo = sc.nextInt();
+        sc.nextLine();
+
+        System.out.println("Enter Account Holder Name:");
+        name = sc.nextLine();
+
+        System.out.println("Enter Initial Balance:");
+        balance = sc.nextDouble();
+
+        System.out.println("Account Created Successfully.");
+    }
+
+    void display()
+    {
+        System.out.println("\nAccount Number: " + accNo);
+        System.out.println("Account Holder Name: " + name);
+        System.out.println("Balance: " + balance);
+    }
+}
+
+class Bank extends Account
+{
+    void deposit()
+    {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("Enter Amount to Deposit:");
+        double amt = sc.nextDouble();
+
+        balance = balance + amt;
+
+        System.out.println("Amount Deposited Successfully.");
+    }
+
+    void withdraw()
+    {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("Enter Amount to Withdraw:");
+        double amt = sc.nextDouble();
+
+        if(balance >= amt)
+        {
+            balance = balance - amt;
+
+            System.out.println("Amount Withdrawn Successfully.");
+        }
+        else
+        {
+            System.out.println("Insufficient Balance.");
+        }
+    }
+
+    // Polymorphism (Method Overriding)
+    void display()
+    {
+        super.display();
+
+        System.out.println("Thank You for Banking.");
+    }
+}
+
+public class BankManagementSystem
+{
+    public static void main(String args[])
+    {
+        Scanner sc = new Scanner(System.in);
+
+        Bank b = new Bank();
+
+        int choice;
+
+        do
+        {
+            System.out.println("\n===== BANK MENU =====");
+
+            System.out.println("1. Create Account");
+            System.out.println("2. Deposit");
+            System.out.println("3. Withdraw");
+            System.out.println("4. Balance Inquiry");
+            System.out.println("5. Exit");
+
+            System.out.println("Enter Choice:");
+            choice = sc.nextInt();
+
+            switch(choice)
+            {
+                case 1:
+                    b.createAccount();
+                    break;
+
+                case 2:
+                    b.deposit();
+                    break;
+
+                case 3:
+                    b.withdraw();
+                    break;
+
+                case 4:
+                    b.display();
+                    break;
+
+                case 5:
+                    System.out.println("Exiting...");
+                    break;
+
+                default:
+                    System.out.println("Invalid Choice");
+            }
+
+        } while(choice != 5);
+    }
+}

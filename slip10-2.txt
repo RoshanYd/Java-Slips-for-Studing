@@ -1,0 +1,94 @@
+/*Write a client-server program using TCP sockets to echo the message sent by the
+client.*/
+
+
+//Server code
+import java.io.*;
+import java.net.*;
+
+public class EchoServer {
+    public static void main(String[] args) {
+        int port = 1234;
+
+        try (ServerSocket serverSocket = new ServerSocket(port)) {
+            System.out.println("Server is running and waiting for client...");
+
+            Socket socket = serverSocket.accept();
+            System.out.println("Client connected!");
+
+            BufferedReader input = new BufferedReader(
+                    new InputStreamReader(socket.getInputStream()));
+            PrintWriter output = new PrintWriter(
+                    socket.getOutputStream(), true);
+
+            String message;
+
+            while ((message = input.readLine()) != null) {
+                System.out.println("Client says: " + message);
+
+                // Echo back to client
+                output.println("Echo: " + message);
+
+                if (message.equalsIgnoreCase("exit")) {
+                    break;
+                }
+            }
+
+            socket.close();
+            System.out.println("Connection closed.");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+//Client Code
+import java.io.*;
+import java.net.*;
+
+public class EchoClient 
+{
+    public static void main(String[] args) 
+	{
+        String host = "localhost";
+        int port = 1234;
+
+        try (Socket socket = new Socket(host, port)) 
+		{
+            System.out.println("Connected to server!");
+
+            BufferedReader userInput = new BufferedReader(
+                    new InputStreamReader(System.in));
+            BufferedReader serverInput = new BufferedReader(
+                    new InputStreamReader(socket.getInputStream()));
+
+            PrintWriter output = new PrintWriter(
+                    socket.getOutputStream(), true);
+
+            String message;
+
+            while (true) 
+			{
+                System.out.print("Enter message: ");
+                message = userInput.readLine();
+
+                output.println(message);
+
+                String response = serverInput.readLine();
+                System.out.println("Server replied: " + response);
+
+                if (message.equalsIgnoreCase("exit"))
+				{
+                    break;
+                }
+            }
+
+            socket.close();
+
+        } catch (IOException e) 
+		{
+            e.printStackTrace();
+        }
+    }
+}

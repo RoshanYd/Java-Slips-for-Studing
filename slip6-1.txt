@@ -1,0 +1,109 @@
+/* Create a Java program to model an academic institution using OOP concepts like
+inheritance, encapsulation, and polymorphism. Define a class hierarchy as follows:
+Staff → Professor → Head of Department (HOD).
+A. Staff: Store and display staff name, date of joining, and staff ID.
+B. Professor: Inherit all Staff details and additionally display subject
+specialization and salary.
+C. HOD: Inherit all Professor details and additionally display department
+allowance (if applicable).
+*/
+
+import java.util.Scanner;
+
+class Staff
+{
+    int id;
+    String name, doj;
+
+    void getStaff()
+    {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("Enter Staff ID:");
+        id = sc.nextInt();
+        sc.nextLine();
+
+        System.out.println("Enter Staff Name:");
+        name = sc.nextLine();
+
+        System.out.println("Enter Date of Joining:");
+        doj = sc.nextLine();
+    }
+
+    void displayStaff()
+    {
+        System.out.println("\n----- STAFF DETAILS -----");
+
+        System.out.println("Staff ID: " + id);
+        System.out.println("Staff Name: " + name);
+        System.out.println("Date of Joining: " + doj);
+    }
+}
+
+class Professor extends Staff
+{
+    String subject;
+    double salary;
+
+    void getProfessor()
+    {
+        getStaff();
+
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("Enter Subject Specialization:");
+        subject = sc.nextLine();
+
+        System.out.println("Enter Salary:");
+        salary = sc.nextDouble();
+    }
+
+    void displayProfessor()
+    {
+        displayStaff();
+
+        System.out.println(
+        "\n----- PROFESSOR DETAILS -----");
+
+        System.out.println("Subject: " + subject);
+        System.out.println("Salary: " + salary);
+    }
+}
+
+class HOD extends Professor
+{
+    double allowance;
+
+    void getHOD()
+    {
+        getProfessor();
+
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("Enter Department Allowance:");
+        allowance = sc.nextDouble();
+    }
+
+    void displayHOD()
+    {
+        displayProfessor();
+
+        System.out.println(
+        "\n----- HOD DETAILS -----");
+
+        System.out.println(
+        "Department Allowance: " + allowance);
+    }
+}
+
+public class AcademicInstitution
+{
+    public static void main(String args[])
+    {
+        HOD h = new HOD();
+
+        h.getHOD();
+
+        h.displayHOD();
+    }
+}

@@ -1,0 +1,81 @@
+/*Implement a Java Program for developing a word counter using AWT & Swing.*/
+
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+class WordCounter extends JFrame implements ActionListener
+{
+    TextArea ta;
+
+    Label l1, l2;
+
+    Button b;
+
+    WordCounter()
+    {
+        ta = new TextArea();
+
+        l1 = new Label("Words: 0");
+
+        l2 = new Label("Characters: 0");
+
+        b = new Button("Count");
+
+        setLayout(null);
+
+        ta.setBounds(50, 50, 300, 150);
+
+        b.setBounds(130, 220, 100, 30);
+
+        l1.setBounds(50, 280, 120, 30);
+
+        l2.setBounds(200, 280, 150, 30);
+
+        add(ta);
+        add(b);
+        add(l1);
+        add(l2);
+
+        b.addActionListener(this);
+
+        setTitle("Word Counter");
+
+        setSize(420, 400);
+
+        setVisible(true);
+
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    public void actionPerformed(ActionEvent e)
+    {
+        String text = ta.getText();
+
+        int characters = text.length();
+
+        String words[] =
+                text.trim().split("\\s+");
+
+        int wordCount = 0;
+
+        if(text.trim().isEmpty())
+        {
+            wordCount = 0;
+        }
+        else
+        {
+            wordCount = words.length;
+        }
+
+        l1.setText("Words: " + wordCount);
+
+        l2.setText(
+                "Characters: " + characters);
+    }
+
+    public static void main(String args[])
+    {
+        new WordCounter();
+    }
+}

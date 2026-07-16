@@ -1,0 +1,144 @@
+/*Develop a Java application that connects to a MySQL database to manage student
+information. Implement CRUD operations for student records using JDBC. Use
+prepared statements to handle SQL queries securely and ensure proper transaction
+management.
+
+database code :
+ CREATE DATABASE studentdb;
+
+ USE studentdb;
+
+ CREATE TABLE student(
+    id INT PRIMARY KEY,
+    name VARCHAR(50),
+    marks INT);
+*/
+
+
+import java.sql.*;
+import java.util.Scanner;
+
+class StudentCRUD
+{
+    public static void main(String args[])
+    {
+        Scanner sc = new Scanner(System.in);
+
+        try
+        {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            Connection con = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3306/studentdb",
+                    "root",
+                    "@zekky@999"
+            );
+
+            int choice;
+
+            do
+            {
+                System.out.println("\n1. Insert");
+                System.out.println("2. Display");
+                System.out.println("3. Update");
+                System.out.println("4. Delete");
+                System.out.println("5. Exit");
+
+                System.out.println("Enter Choice:");
+                choice = sc.nextInt();
+
+                switch(choice)
+                {
+                    case 1:
+                        PreparedStatement ps =
+                                con.prepareStatement(
+                                        "insert into student values(?,?,?)");
+
+                        System.out.println("Enter ID:");
+                        int id = sc.nextInt();
+                        sc.nextLine();
+
+                        System.out.println("Enter Name:");
+                        String name = sc.nextLine();
+
+                        System.out.println("Enter Marks:");
+                        int marks = sc.nextInt();
+
+                        ps.setInt(1, id);
+                        ps.setString(2, name);
+                        ps.setInt(3, marks);
+
+                        ps.executeUpdate();
+
+                        System.out.println("Record Inserted");
+                        break;
+
+                    case 2:
+                        Statement st = con.createStatement();
+
+                        ResultSet rs =
+                                st.executeQuery("select * from student");
+
+                        System.out.println("\nStudent Records:");
+
+                        while(rs.next())
+                        {
+                            System.out.println(
+                                    rs.getInt(1) + " "
+                                            + rs.getString(2) + " "
+                                            + rs.getInt(3));
+                        }
+                        break;
+
+                    case 3:
+                        PreparedStatement ps2 =
+                                con.prepareStatement(
+                                        "update student set marks=? where id=?");
+
+                        System.out.println("Enter New Marks:");
+                        int m = sc.nextInt();
+
+                        System.out.println("Enter Student ID:");
+                        int sid = sc.nextInt();
+
+                        ps2.setInt(1, m);
+                        ps2.setInt(2, sid);
+
+                        ps2.executeUpdate();
+
+                        System.out.println("Record Updated");
+                        break;
+
+                    case 4:
+                        PreparedStatement ps3 =
+                                con.prepareStatement(
+                                        "delete from student where id=?");
+
+                        System.out.println("Enter Student ID:");
+                        int did = sc.nextInt();
+
+                        ps3.setInt(1, did);
+
+                        ps3.executeUpdate();
+
+                        System.out.println("Record Deleted");
+                        break;
+
+                    case 5:
+                        System.out.println("Exiting...");
+                        break;
+
+                    default:
+                        System.out.println("Invalid Choice");
+                }
+
+            } while(choice != 5);
+
+            con.close();
+        }
+        catch(Exception e)
+        {
+            System.out.println(e);
+        }
+    }
+}

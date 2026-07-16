@@ -1,0 +1,71 @@
+/*Write a program to demonstrate how the process tasks asynchronously in a Spring
+Boot application.*/
+
+/* 1.go to start.spring.import 
+2.download file 
+3.open the file in intellij and run the application
+4.go to src/main/java/com/example/demo/DemoApplication.java
+5.create class AsyncService,AsyncController,AsyncDemoApplication */
+
+/* ADD code in AsyncDemoApplication.java */
+package com.example.firstdemo;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableAsync;
+
+@SpringBootApplication
+@EnableAsync
+public class AsyncDemoApplication {
+    public static void main (String[] args) {
+        SpringApplication.run(AsyncDemoApplication.class, args);
+    }
+
+}
+
+
+/* Add code in AsyncService.java */
+package com.example.firstdemo;
+
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
+
+@Service
+public class AsyncService {
+
+    @Async
+    public void processTask() {
+        try {
+            System.out.println("Task started on thread: " +
+                    Thread.currentThread().getName());
+
+            Thread.sleep(5000); // simulate long process (5 seconds)
+
+            System.out.println("Task completed on thread:" +
+                    Thread.currentThread().getName());
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+/* Add code in AsyncController.java */
+package com.example.firstdemo;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class AsyncController {
+
+    @Autowired
+    private AsyncService asyncService;
+
+    @GetMapping("/run")
+    public String runTask() {
+        asyncService.processTask();
+        return "Task triggered successfully";
+    }
+}

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Java Slips Solutions – Complete MCA Practical Programs</title>
+  <meta name="description" content="All 20 Java practical slips with complete solutions. Ready to copy & paste programs for File Handling, JDBC, OOP, Swing, Multithreading, Socket Programming and more." />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>☕</text></svg>" />
+</head>
+<body class="dark">
+
+  <!-- HEADER -->
+  <header class="header">
+    <a class="header-logo" href="#" onclick="renderHome(); return false;">
+      <div class="logo-icon">J</div>
+      <span>JavaSlips</span>
+    </a>
+    <div class="header-search">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="search-input" placeholder='Search slips, topics... (press "/" )' autocomplete="off" />
+    </div>
+    <div class="header-actions" style="display:flex; gap:10px; align-items:center;">
+      <button id="theme-toggle" class="icon-btn" aria-label="Toggle dark mode" style="background:none; border:none; font-size:1.2rem; cursor:pointer;">☀️</button>
+      <button class="menu-toggle" aria-label="Toggle menu">☰</button>
+    </div>
+  </header>
+
+  <!-- SIDEBAR OVERLAY (mobile) -->
+  <div class="sidebar-overlay"></div>
+
+  <!-- LAYOUT -->
+  <div class="app-layout">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-title">All Slips</div>
+      <ul class="slip-list"></ul>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main-content" id="main-area">
+      <!-- Rendered by JS -->
+    </main>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <!-- SCRIPTS -->
+  <script src="slips-data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

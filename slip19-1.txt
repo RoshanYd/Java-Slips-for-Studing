@@ -1,0 +1,42 @@
+/*Write a program to accept roll no. Marks from users. Throw user defined exception
+Marks out of Bound if marks are 100.*/
+
+package ExceptionHandling;
+
+import java.util.Scanner;
+
+// Custom Exception
+class MarksOutOfBound extends Exception {
+    MarksOutOfBound(String msg) {
+        super(msg);
+    }
+}
+
+public class Excep {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        int rollNo, marks;
+
+        System.out.print("Enter Roll No: ");
+        rollNo = sc.nextInt();
+
+        System.out.print("Enter Marks: ");
+        marks = sc.nextInt();
+
+        try {
+            if (marks > 100) {
+                throw new MarksOutOfBound("Marks should not be more than 100");
+            }
+
+            System.out.println("Roll No: " + rollNo);
+            System.out.println("Marks: " + marks);
+
+        } catch (MarksOutOfBound e) {
+            System.out.println("Exception: " + e.getMessage());
+        }
+
+        sc.close();
+    }
+}
+

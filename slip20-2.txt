@@ -1,0 +1,63 @@
+/*Write a program of servlet to demonstrate GET and POST Methods with suitable
+example using simulation.*/
+
+
+import java.util.Scanner;
+
+public class RequestSimulator {
+
+    // Simulating GET method
+    public static void doGet(String name, String age) {
+        System.out.println("\n--- GET Method Execution ---");
+        System.out.println("URL: http://localhost:8080/student?name=" + name +
+                "&age=" + age);
+
+        System.out.println("Data received using GET method:");
+        System.out.println("Name: " + name);
+        System.out.println("Age: " + age);
+    }
+
+    // Simulating POST method
+    public static void doPost(String name, String age) {
+        System.out.println("\n--- POST Method Execution ---");
+        System.out.println("URL: http://localhost:8080/student");
+        System.out.println("(Data is sent in request body, not visible in URL)");
+
+        System.out.println("Data received using POST method:");
+        System.out.println("Name: " + name);
+        System.out.println("Age: " + age);
+    }
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("=== Servlet GET/POST Simulation ===");
+
+        // Taking input
+        System.out.print("Enter Name: ");
+        String name = sc.nextLine();
+
+        System.out.print("Enter Age: ");
+        String age = sc.nextLine();
+
+        // Choosing method
+        System.out.println("\nChoose Method:");
+        System.out.println("1. GET");
+        System.out.println("2. POST");
+        System.out.print("Enter choice: ");
+
+        int choice = sc.nextInt();
+
+        // Calling respective method
+        if (choice == 1) {
+            doGet(name, age);
+        } else if (choice == 2) {
+            doPost(name, age);
+        } else {
+            System.out.println("Invalid choice!");
+        }
+
+        sc.close();
+    }
+}

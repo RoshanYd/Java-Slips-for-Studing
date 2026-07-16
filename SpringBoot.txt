@@ -1,0 +1,31 @@
+/*
+steps to setup a spring boot project with intellij
+
+go to start.spring.io or spring initializer in browser 
+
+Project : Maven 
+Language : Java
+Spring Boot Version : latest 
+Project Metadata :
+Group : com.example 
+Artifact : demo
+Name : demo
+Description : demo project for spring boot
+Package name : com.example.demo
+Packaging : Jar
+Java : 17 (latest version installed on your machine)
+Dependencies : Spring Web \
+click on generate and download the project
+unzip the downloaded project and open it in intellij
+click on project structure and set the project sdk to java 17 or the version you have installed
+
+now 
+click on  src -> main -> java -> com.example.demo -> DemoApplication.java
+click on DemoApplication.java and run it 
+click on it only and create other java classes in the same package com.example.demo
+check on localhost:8080 in your browser to see the default spring boot page
+if not shown , change the port no , click on resources -> application.properties -> 
+spring.application.name=demo
+server.port=8081 
+now it will run 
+*/

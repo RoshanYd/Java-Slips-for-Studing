@@ -1,0 +1,329 @@
+/*
+Write a program to implement patient information in a file and perform the file
+operations on it.
+*/
+
+//Create 
+
+import java.io.*;
+import java.util.Scanner;
+
+class CreatePatientFile
+{
+    public static void main(String args[])
+    {
+        try
+        {
+            File file = new File("patient.txt");
+
+            if(file.createNewFile())
+            {
+                System.out.println("File Created");
+            }
+
+            Scanner sc = new Scanner(System.in);
+
+            System.out.println("Enter Patient ID:");
+            int id = sc.nextInt();
+            sc.nextLine();
+
+            // Check Duplicate ID
+            boolean exists = false;
+
+            Scanner reader = new Scanner(file);
+
+            while(reader.hasNextLine())
+            {
+                String line = reader.nextLine();
+
+                if(line.startsWith("Patient ID:"))
+                {
+                    int pid = Integer.parseInt(
+                              line.substring(11).trim());
+
+                    if(pid == id)
+                    {
+                        exists = true;
+                        break;
+                    }
+                }
+            }
+
+            reader.close();
+
+            if(exists)
+            {
+                System.out.println(
+                "Patient ID Already Exists");
+            }
+            else
+            {
+                FileWriter writer =
+                new FileWriter(file, true);
+
+                System.out.println(
+                "Enter Patient Name:");
+
+                String name = sc.nextLine();
+
+                System.out.println("Enter Disease:");
+
+                String disease = sc.nextLine();
+
+                writer.write(
+                "\nPatient ID: " + id + "\n");
+
+                writer.write(
+                "Patient Name: " + name + "\n");
+
+                writer.write(
+                "Disease: " + disease + "\n");
+
+                writer.close();
+
+                System.out.println(
+                "Patient Record Added");
+            }
+        }
+
+        catch(Exception e)
+        {
+            System.out.println(e);
+        }
+    }
+}
+
+//Read
+
+import java.io.*;
+import java.util.Scanner;
+
+class ReadPatientFile
+{
+    public static void main(String args[])
+    {
+        try
+        {
+            File file = new File("patient.txt");
+
+            Scanner reader =
+            new Scanner(file);
+
+            System.out.println(
+            "\n----- PATIENT RECORDS -----");
+
+            while(reader.hasNextLine())
+            {
+                System.out.println(
+                reader.nextLine());
+            }
+
+            reader.close();
+        }
+
+        catch(Exception e)
+        {
+            System.out.println(e);
+        }
+    }
+}
+
+//write
+
+import java.io.*;
+import java.util.Scanner;
+
+class UpdatePatientFile
+{
+    public static void main(String args[])
+    {
+        try
+        {
+            File inputFile =
+            new File("patient.txt");
+
+            File tempFile =
+            new File("temp.txt");
+
+            BufferedReader br =
+            new BufferedReader(
+            new FileReader(inputFile));
+
+            BufferedWriter bw =
+            new BufferedWriter(
+            new FileWriter(tempFile));
+
+            Scanner sc =
+            new Scanner(System.in);
+
+            System.out.println(
+            "Enter Patient ID to Update:");
+
+            int updateId = sc.nextInt();
+            sc.nextLine();
+
+            String line;
+
+            boolean found = false;
+
+            while((line = br.readLine()) != null)
+            {
+                if(line.startsWith("Patient ID:"))
+                {
+                    int id =
+                    Integer.parseInt(
+                    line.substring(11).trim());
+
+                    if(id == updateId)
+                    {
+                        found = true;
+
+                        // Skip old data
+                        br.readLine();
+                        br.readLine();
+
+                        System.out.println(
+                        "Enter New Patient Name:");
+
+                        String name =
+                        sc.nextLine();
+
+                        System.out.println(
+                        "Enter New Disease:");
+
+                        String disease =
+                        sc.nextLine();
+
+                        bw.write(
+                        "Patient ID: " + id);
+
+                        bw.newLine();
+
+                        bw.write(
+                        "Patient Name: " + name);
+
+                        bw.newLine();
+
+                        bw.write(
+                        "Disease: " + disease);
+
+                        bw.newLine();
+                    }
+
+                    else
+                    {
+                        bw.write(line);
+                        bw.newLine();
+
+                        bw.write(br.readLine());
+                        bw.newLine();
+
+                        bw.write(br.readLine());
+                        bw.newLine();
+                    }
+                }
+            }
+
+            br.close();
+            bw.close();
+
+            inputFile.delete();
+
+            tempFile.renameTo(inputFile);
+
+            if(found)
+                System.out.println(
+                "Record Updated");
+
+            else
+                System.out.println(
+                "Patient Not Found");
+        }
+
+        catch(Exception e)
+        {
+            System.out.println(e);
+        }
+    }
+}
+
+//Delete
+
+import java.io.*;
+import java.util.Scanner;
+
+class DeletePatientFile
+{
+    public static void main(String args[])
+    {
+        try
+        {
+            File inputFile =
+            new File("patient.txt");
+
+            File tempFile =
+            new File("temp.txt");
+
+            BufferedReader br =
+            new BufferedReader(
+            new FileReader(inputFile));
+
+            BufferedWriter bw =
+            new BufferedWriter(
+            new FileWriter(tempFile));
+
+            Scanner sc =
+            new Scanner(System.in);
+
+            System.out.println(
+            "Enter Patient ID to Delete:");
+
+            int deleteId = sc.nextInt();
+
+            String line;
+
+            while((line = br.readLine()) != null)
+            {
+                if(line.startsWith("Patient ID:"))
+                {
+                    int id =
+                    Integer.parseInt(
+                    line.substring(11).trim());
+
+                    String name =
+                    br.readLine();
+
+                    String disease =
+                    br.readLine();
+
+                    if(id != deleteId)
+                    {
+                        bw.write(line);
+                        bw.newLine();
+
+                        bw.write(name);
+                        bw.newLine();
+
+                        bw.write(disease);
+                        bw.newLine();
+                    }
+                }
+            }
+
+            br.close();
+            bw.close();
+
+            inputFile.delete();
+
+            tempFile.renameTo(inputFile);
+
+            System.out.println(
+            "Record Deleted");
+        }
+
+        catch(Exception e)
+        {
+            System.out.println(e);
+        }
+    }
+}

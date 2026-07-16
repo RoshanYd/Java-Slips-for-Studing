@@ -1,0 +1,329 @@
+/*Write a program to implement student information in a file and perform the file
+operations on it.*/
+
+
+//Create 
+
+import java.io.*;
+import java.util.Scanner;
+
+class CreateStudentFile
+{
+    public static void main(String args[])
+    {
+        try
+        {
+            File file = new File("student.txt");
+
+            if(file.createNewFile())
+            {
+                System.out.println("File Created");
+            }
+
+            Scanner sc = new Scanner(System.in);
+
+            System.out.println("Enter Roll Number:");
+            int roll = sc.nextInt();
+            sc.nextLine();
+
+            // Check Duplicate Roll No
+            boolean exists = false;
+
+            Scanner reader = new Scanner(file);
+
+            while(reader.hasNextLine())
+            {
+                String line = reader.nextLine();
+
+                if(line.startsWith("Roll No:"))
+                {
+                    int r = Integer.parseInt(
+                            line.substring(8).trim());
+
+                    if(r == roll)
+                    {
+                        exists = true;
+                        break;
+                    }
+                }
+            }
+
+            reader.close();
+
+            if(exists)
+            {
+                System.out.println(
+                "Roll Number Already Exists");
+            }
+            else
+            {
+                FileWriter writer =
+                new FileWriter(file, true);
+
+                System.out.println(
+                "Enter Student Name:");
+                String name = sc.nextLine();
+
+                System.out.println("Enter Marks:");
+                int marks = sc.nextInt();
+
+                writer.write(
+                "\nRoll No: " + roll + "\n");
+
+                writer.write(
+                "Name: " + name + "\n");
+
+                writer.write(
+                "Marks: " + marks + "\n");
+
+                writer.close();
+
+                System.out.println(
+                "Student Record Added");
+            }
+        }
+
+        catch(Exception e)
+        {
+            System.out.println(e);
+        }
+    }
+}
+
+
+//Read
+
+import java.io.*;
+import java.util.Scanner;
+
+class ReadStudentFile
+{
+    public static void main(String args[])
+    {
+        try
+        {
+            File file = new File("student.txt");
+
+            Scanner reader =
+            new Scanner(file);
+
+            System.out.println(
+            "\n----- STUDENT RECORDS -----");
+
+            while(reader.hasNextLine())
+            {
+                System.out.println(
+                reader.nextLine());
+            }
+
+            reader.close();
+        }
+
+        catch(Exception e)
+        {
+            System.out.println(e);
+        }
+    }
+}
+
+
+//Delete
+
+import java.io.*;
+import java.util.Scanner;
+
+class DeleteStudentFile
+{
+    public static void main(String args[])
+    {
+        try
+        {
+            File inputFile =
+            new File("student.txt");
+
+            File tempFile =
+            new File("temp.txt");
+
+            BufferedReader br =
+            new BufferedReader(
+            new FileReader(inputFile));
+
+            BufferedWriter bw =
+            new BufferedWriter(
+            new FileWriter(tempFile));
+
+            Scanner sc =
+            new Scanner(System.in);
+
+            System.out.println(
+            "Enter Roll Number to Delete:");
+
+            int deleteRoll = sc.nextInt();
+
+            String line;
+
+            while((line = br.readLine()) != null)
+            {
+                if(line.startsWith("Roll No:"))
+                {
+                    int roll =
+                    Integer.parseInt(
+                    line.substring(8).trim());
+
+                    String name =
+                    br.readLine();
+
+                    String marks =
+                    br.readLine();
+
+                    if(roll != deleteRoll)
+                    {
+                        bw.write(line);
+                        bw.newLine();
+
+                        bw.write(name);
+                        bw.newLine();
+
+                        bw.write(marks);
+                        bw.newLine();
+                    }
+                }
+            }
+
+            br.close();
+            bw.close();
+
+            inputFile.delete();
+
+            tempFile.renameTo(inputFile);
+
+            System.out.println(
+            "Record Deleted");
+        }
+
+        catch(Exception e)
+        {
+            System.out.println(e);
+        }
+    }
+}
+
+//Update
+
+
+import java.io.*;
+import java.util.Scanner;
+
+class UpdateStudentFile
+{
+    public static void main(String args[])
+    {
+        try
+        {
+            File inputFile =
+            new File("student.txt");
+
+            File tempFile =
+            new File("temp.txt");
+
+            BufferedReader br =
+            new BufferedReader(
+            new FileReader(inputFile));
+
+            BufferedWriter bw =
+            new BufferedWriter(
+            new FileWriter(tempFile));
+
+            Scanner sc =
+            new Scanner(System.in);
+
+            System.out.println(
+            "Enter Roll Number to Update:");
+
+            int updateRoll = sc.nextInt();
+            sc.nextLine();
+
+            String line;
+
+            boolean found = false;
+
+            while((line = br.readLine()) != null)
+            {
+                if(line.startsWith("Roll No:"))
+                {
+                    int roll =
+                    Integer.parseInt(
+                    line.substring(8).trim());
+
+                    if(roll == updateRoll)
+                    {
+                        found = true;
+
+                        // Skip old data
+                        br.readLine();
+                        br.readLine();
+
+                        System.out.println(
+                        "Enter New Name:");
+
+                        String name =
+                        sc.nextLine();
+
+                        System.out.println(
+                        "Enter New Marks:");
+
+                        int marks =
+                        sc.nextInt();
+
+                        bw.write(
+                        "Roll No: " + roll);
+
+                        bw.newLine();
+
+                        bw.write(
+                        "Name: " + name);
+
+                        bw.newLine();
+
+                        bw.write(
+                        "Marks: " + marks);
+
+                        bw.newLine();
+                    }
+
+                    else
+                    {
+                        bw.write(line);
+                        bw.newLine();
+
+                        bw.write(br.readLine());
+                        bw.newLine();
+
+                        bw.write(br.readLine());
+                        bw.newLine();
+                    }
+                }
+            }
+
+            br.close();
+            bw.close();
+
+            inputFile.delete();
+
+            tempFile.renameTo(inputFile);
+
+            if(found)
+                System.out.println(
+                "Record Updated");
+
+            else
+                System.out.println(
+                "Student Not Found");
+        }
+
+        catch(Exception e)
+        {
+            System.out.println(e);
+        }
+    }
+}

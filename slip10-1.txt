@@ -1,0 +1,101 @@
+/*Implement a Java program to manage retail staff using OOP concepts. Define a
+hierarchy: Worker → Supervisor → StoreManager.
+A. Worker: Store and display worker name, ID, and date of birth.
+B. Supervisor: Inherit Worker details and additionally include monthly salary.
+C. StoreManager: Inherit Supervisor details and additionally include
+profit-based incentives or commission (if applicable).
+*/
+
+import java.util.Scanner;
+
+class Worker
+{
+    int id;
+    String name, dob;
+
+    void getWorker()
+    {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("Enter Worker ID:");
+        id = sc.nextInt();
+        sc.nextLine();
+
+        System.out.println("Enter Worker Name:");
+        name = sc.nextLine();
+
+        System.out.println("Enter Date of Birth:");
+        dob = sc.nextLine();
+    }
+
+    void displayWorker()
+    {
+        System.out.println("\n----- WORKER DETAILS -----");
+
+        System.out.println("Worker ID: " + id);
+        System.out.println("Worker Name: " + name);
+        System.out.println("Date of Birth: " + dob);
+    }
+}
+
+class Supervisor extends Worker
+{
+    double salary;
+
+    void getSupervisor()
+    {
+        getWorker();
+
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("Enter Monthly Salary:");
+        salary = sc.nextDouble();
+    }
+
+    void displaySupervisor()
+    {
+        displayWorker();
+
+        System.out.println("\n----- SUPERVISOR DETAILS -----");
+
+        System.out.println("Monthly Salary: " + salary);
+    }
+}
+
+class StoreManager extends Supervisor
+{
+    double incentive;
+
+    void getStoreManager()
+    {
+        getSupervisor();
+
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("Enter Incentive/Commission:");
+        incentive = sc.nextDouble();
+    }
+
+    void displayStoreManager()
+    {
+        displaySupervisor();
+
+        System.out.println(
+                "\n----- STORE MANAGER DETAILS -----");
+
+        System.out.println(
+                "Incentive/Commission: " + incentive);
+    }
+}
+
+public class RetailStaffManagement
+{
+    public static void main(String args[])
+    {
+        StoreManager s = new StoreManager();
+
+        s.getStoreManager();
+
+        s.displayStoreManager();
+    }
+}

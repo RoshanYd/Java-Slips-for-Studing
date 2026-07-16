@@ -1,0 +1,42 @@
+/*
+Procedure To Download Mysql server and connectorj 
+
+Mysql server download link: https://dev.mysql.com/downloads/mysql/
+
+Steps for Mysql server:
+
+search Mysql install
+select the first link and click on it
+select windows(x86, 32 bit (with most downloads)) msi installer and click on download
+no thanks and continue download
+click on the downloaded file 
+full->next->next->execute->next->next->next->password(root)->next->next->execute->finish-
+
+
+
+
+
+
+
+
+
+
+
+Connectorj download link: https://dev.mysql.com/downloads/connector/j/
+steps for Mysql connectorj:
+ 
+search "Download Mysql Connnectorj "
+select the first link and click on it
+select platform independent and click on download
+select platform independent (Architecture Independent)Zip Archive, and click on download
+Extract the downloaded file
+open intellij and create an new project 
+click on 3 lines on top corner 
+select project structure
+select libraries and click on + icon 
+select java and then go were you downloaded and extracted the connectorj file
+select .jar file and click on ok
+then click on apply and ok
+it should appear on External Libraries
+
+*/

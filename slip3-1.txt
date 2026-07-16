@@ -1,0 +1,154 @@
+/*Create a Java program to manage employee payroll using OOP concepts. Include
+functionalities such as employee creation, salary calculation, bonus allocation, and
+payslip generation. Use inheritance for different employee types (e.g., full-time,
+part-time).*/
+
+
+import java.util.Scanner;
+
+// Base Class
+class Employee {
+    int id;
+    String name;
+    double salary;
+    double bonus;
+
+    // Method to accept employee details
+    void getEmployeeData(int i, String n) {
+        id = i;
+        name = n;
+    }
+
+    // Method to calculate salary
+    void calculateSalary() {
+        // Overridden in child classes
+    }
+
+    // Method to allocate bonus
+    void allocateBonus(double b) {
+        bonus = b;
+    }
+
+    // Method to generate payslip
+    void generatePayslip() {
+        System.out.println("\n===== PAYSLIP =====");
+        System.out.println("Employee ID : " + id);
+        System.out.println("Employee Name : " + name);
+        System.out.println("Salary : " + salary);
+        System.out.println("Bonus : " + bonus);
+        System.out.println("Total Salary : " + (salary + bonus));
+    }
+}
+
+// Full-Time Employee
+class FullTimeEmployee extends Employee {
+    double monthlySalary;
+
+    void getFullTimeData(int i, String n, double ms) {
+        getEmployeeData(i, n);
+        monthlySalary = ms;
+    }
+
+    // Salary calculation
+    void calculateSalary() {
+        salary = monthlySalary;
+    }
+}
+
+// Part-Time Employee
+class PartTimeEmployee extends Employee {
+    int hoursWorked;
+    double ratePerHour;
+
+    void getPartTimeData(int i, String n, int h, double r) {
+        getEmployeeData(i, n);
+        hoursWorked = h;
+        ratePerHour = r;
+    }
+
+    // Salary calculation
+    void calculateSalary() {
+        salary = hoursWorked * ratePerHour;
+    }
+}
+
+// Main Class
+public class PayrollSystem {
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("===== Employee Payroll System =====");
+
+        // Choice
+        System.out.println("\nSelect Employee Type:");
+        System.out.println("1. Full-Time Employee");
+        System.out.println("2. Part-Time Employee");
+        System.out.print("Enter Choice: ");
+
+        int choice = sc.nextInt();
+
+        // Full-Time Employee
+        if (choice == 1) {
+
+            FullTimeEmployee ft = new FullTimeEmployee();
+
+            System.out.print("Enter Employee ID: ");
+            int id = sc.nextInt();
+            sc.nextLine();
+
+            System.out.print("Enter Employee Name: ");
+            String name = sc.nextLine();
+
+            System.out.print("Enter Monthly Salary: ");
+            double salary = sc.nextDouble();
+
+            System.out.print("Enter Bonus: ");
+            double bonus = sc.nextDouble();
+
+            ft.getFullTimeData(id, name, salary);
+
+            ft.calculateSalary();
+
+            ft.allocateBonus(bonus);
+
+            ft.generatePayslip();
+        }
+
+        // Part-Time Employee
+        else if (choice == 2) {
+
+            PartTimeEmployee pt = new PartTimeEmployee();
+
+            System.out.print("Enter Employee ID: ");
+            int id = sc.nextInt();
+            sc.nextLine();
+
+            System.out.print("Enter Employee Name: ");
+            String name = sc.nextLine();
+
+            System.out.print("Enter Hours Worked: ");
+            int hours = sc.nextInt();
+
+            System.out.print("Enter Rate Per Hour: ");
+            double rate = sc.nextDouble();
+
+            System.out.print("Enter Bonus: ");
+            double bonus = sc.nextDouble();
+
+            pt.getPartTimeData(id, name, hours, rate);
+
+            pt.calculateSalary();
+
+            pt.allocateBonus(bonus);
+
+            pt.generatePayslip();
+        }
+
+        else {
+            System.out.println("Invalid Choice!");
+        }
+
+        sc.close();
+    }
+}

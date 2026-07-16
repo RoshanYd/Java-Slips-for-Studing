@@ -1,0 +1,93 @@
+//filehandling small codes
+
+
+package SmallFileHandling;
+
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
+
+//Write
+
+public class WriteEmployee {
+    public static void main(String[] var0) {
+        Scanner var1 = new Scanner(System.in);
+
+        try {
+            FileWriter var2 = new FileWriter("employee.txt", true);
+            System.out.print("Enter Employee ID: ");
+            int var3 = var1.nextInt();
+            var1.nextLine();
+            System.out.print("Enter Employee Name: ");
+            String var4 = var1.nextLine();
+            System.out.print("Enter Employee Salary: ");
+            double var5 = var1.nextDouble();
+            var2.write("ID: " + var3 + "\n");
+            var2.write("Name: " + var4 + "\n");
+            var2.write("Salary: " + var5 + "\n");
+            var2.write("----------------------\n");
+            var2.close();
+            System.out.println("Employee data written successfully.");
+        } catch (IOException var7) {
+            System.out.println("Error: " + var7);
+        }
+
+        var1.close();
+    }
+}
+
+
+//Read
+
+package SmallFileHandling;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
+public class ReadEmployee {
+    public static void main(String[] args) {
+
+        try {
+            File file = new File("employee.txt");
+            Scanner sc = new Scanner(file);
+
+            System.out.println("Employee Details:\n");
+
+            while (sc.hasNextLine()) {
+                System.out.println(sc.nextLine());
+            }
+
+            sc.close();
+
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found.");
+        }
+    }
+}
+
+
+//delete 
+
+package SmallFileHandling;
+
+
+import java.io.*;
+
+public class DeleteEmployee
+{
+    public static void main(String[] args)
+    {
+        File myFile = new File("employee.txt");
+
+        if(myFile.delete())
+        {
+            System.out.println("Employee Record Deleted : " + myFile.getName());
+        }
+
+        else
+        {
+            System.out.println("Employee Record not deleted !");
+        }
+    }
+}

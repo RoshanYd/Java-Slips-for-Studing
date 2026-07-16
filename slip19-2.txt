@@ -1,0 +1,179 @@
+/*
+Create a Java application that connects to a MySQL database to manage employee
+information. Implement functionalities like adding, updating, deleting, and viewing
+employee records using JDBC. Use prepared statements to prevent SQL injection
+and handle exceptions gracefully.
+
+Table :
+
+CREATE TABLE employee(
+id int primary key auto_increment,
+name varchar(100),
+salary double,
+department varchar(100));
+*/
+
+
+
+package JAVAJDBC;
+import java.sql.*;
+import java.util.Scanner;
+
+public class EmployeeApp {
+
+    static final String URL = "jdbc:mysql://localhost:3306/company";
+    static final String USER = "root";
+    static final String PASSWORD = "@zekky@999";
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        try {
+            Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+
+            while (true) {
+                System.out.println("\n1. Add Employee");
+                System.out.println("2. View Employees");
+                System.out.println("3. Update Employee");
+                System.out.println("4. Delete Employee");
+                System.out.println("5. Exit");
+
+                System.out.print("Enter choice: ");
+                int choice = sc.nextInt();
+
+                switch (choice) {
+
+                    case 1:
+                        addEmployee(conn, sc);
+                        break;
+
+                    case 2:
+                        viewEmployees(conn);
+                        break;
+
+                    case 3:
+                        updateEmployee(conn, sc);
+                        break;
+
+                    case 4:
+                        deleteEmployee(conn, sc);
+                        break;
+
+                    case 5:
+                        conn.close();
+                        System.out.println("Exited Successfully!");
+                        return;
+
+                    default:
+                        System.out.println("Invalid Choice!");
+                }
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+
+    // ADD
+    public static void addEmployee(Connection conn, Scanner sc) {
+        try {
+            String sql = "INSERT INTO employee(name, salary, department) VALUES (?, ?, ?)";
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            System.out.print("Enter Name: ");
+            sc.nextLine();
+            String name = sc.nextLine();
+
+            System.out.print("Enter Salary: ");
+            double salary = sc.nextDouble();
+
+            System.out.print("Enter Department: ");
+            sc.nextLine();
+            String dept = sc.nextLine();
+
+            ps.setString(1, name);
+            ps.setDouble(2, salary);
+            ps.setString(3, dept);
+
+            ps.executeUpdate();
+            System.out.println("Employee Added!");
+
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+
+    // VIEW
+    public static void viewEmployees(Connection conn) {
+        try {
+            String sql = "SELECT * FROM employee";
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            ResultSet rs = ps.executeQuery();
+
+            System.out.println("\n--- Employee List ---");
+            while (rs.next()) {
+                System.out.println(
+                        rs.getInt("id") + " | " +
+                                rs.getString("name") + " | " +
+                                rs.getDouble("salary") + " | " +
+                                rs.getString("department"));
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+
+    // UPDATE
+    public static void updateEmployee(Connection conn, Scanner sc) {
+        try {
+            String sql = "UPDATE employee SET salary=? WHERE id=?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            System.out.print("Enter Employee ID: ");
+            int id = sc.nextInt();
+
+            System.out.print("Enter New Salary: ");
+            double salary = sc.nextDouble();
+
+            ps.setDouble(1, salary);
+            ps.setInt(2, id);
+
+            int rows = ps.executeUpdate();
+
+            if (rows > 0)
+                System.out.println("Employee Updated!");
+            else
+                System.out.println("Employee Not Found!");
+
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+
+    // DELETE
+    public static void deleteEmployee(Connection conn, Scanner sc) {
+        try {
+            String sql = "DELETE FROM employee WHERE id=?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            System.out.print("Enter Employee ID: ");
+            int id = sc.nextInt();
+
+            ps.setInt(1, id);
+
+            int rows = ps.executeUpdate();
+
+            if (rows > 0)
+                System.out.println("Employee Deleted!");
+            else
+                System.out.println("Employee Not Found!");
+
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+}
+

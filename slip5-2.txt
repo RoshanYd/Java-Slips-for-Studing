@@ -1,0 +1,192 @@
+/*Implement a Java program to manage a library system using OOP concepts such as
+classes, inheritance, encapsulation, and polymorphism. Include features like adding
+books, issuing books, returning books, and checking availability.*/
+
+
+import java.util.Scanner;
+
+class Book
+{
+    int id;
+    String name;
+    String author;
+    boolean available = true;
+
+    void addBook()
+    {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("Enter Book ID:");
+        id = sc.nextInt();
+        sc.nextLine();
+
+        System.out.println("Enter Book Name:");
+        name = sc.nextLine();
+
+        System.out.println("Enter Author Name:");
+        author = sc.nextLine();
+    }
+
+    void displayBook()
+    {
+        System.out.println("\nBook ID: " + id);
+        System.out.println("Book Name: " + name);
+        System.out.println("Author: " + author);
+
+        if(available)
+            System.out.println("Status: Available");
+        else
+            System.out.println("Status: Issued");
+    }
+}
+
+class Library extends Book
+{
+    // Polymorphism (Method Overriding)
+    void displayBook()
+    {
+        super.displayBook();
+
+        if(available)
+            System.out.println("Book can be issued.");
+        else
+            System.out.println("Book is currently not available.");
+    }
+}
+
+public class LibraryManagementSystem
+{
+    public static void main(String args[])
+    {
+        Scanner sc = new Scanner(System.in);
+
+        Library books[] = new Library[10];
+
+        int count = 0;
+        int choice;
+
+        do
+        {
+            System.out.println("\n===== LIBRARY MENU =====");
+
+            System.out.println("1. Add Book");
+            System.out.println("2. Display All Books");
+            System.out.println("3. Issue Book");
+            System.out.println("4. Return Book");
+            System.out.println("5. Exit");
+
+            System.out.println("Enter Choice:");
+            choice = sc.nextInt();
+
+            switch(choice)
+            {
+                case 1:
+
+                    books[count] = new Library();
+
+                    books[count].addBook();
+
+                    count++;
+
+                    System.out.println("Book Added Successfully.");
+                    break;
+
+                case 2:
+
+                    if(count == 0)
+                    {
+                        System.out.println("No Books Available.");
+                    }
+                    else
+                    {
+                        for(int i = 0; i < count; i++)
+                        {
+                            books[i].displayBook();
+                        }
+                    }
+
+                    break;
+
+                case 3:
+
+                    System.out.println("Enter Book ID to Issue:");
+                    int issueId = sc.nextInt();
+
+                    boolean foundIssue = false;
+
+                    for(int i = 0; i < count; i++)
+                    {
+                        if(books[i].id == issueId)
+                        {
+                            foundIssue = true;
+
+                            if(books[i].available)
+                            {
+                                books[i].available = false;
+
+                                System.out.println(
+                                "Book Issued Successfully.");
+                            }
+                            else
+                            {
+                                System.out.println(
+                                "Book Already Issued.");
+                            }
+                        }
+                    }
+
+                    if(!foundIssue)
+                    {
+                        System.out.println("Book Not Found.");
+                    }
+
+                    break;
+
+                case 4:
+
+                    System.out.println("Enter Book ID to Return:");
+                    int returnId = sc.nextInt();
+
+                    boolean foundReturn = false;
+
+                    for(int i = 0; i < count; i++)
+                    {
+                        if(books[i].id == returnId)
+                        {
+                            foundReturn = true;
+
+                            if(!books[i].available)
+                            {
+                                books[i].available = true;
+
+                                System.out.println(
+                                "Book Returned Successfully.");
+                            }
+                            else
+                            {
+                                System.out.println(
+                                "Book is Already Available.");
+                            }
+                        }
+                    }
+
+                    if(!foundReturn)
+                    {
+                        System.out.println("Book Not Found.");
+                    }
+
+                    break;
+
+                case 5:
+
+                    System.out.println("Exiting...");
+                    break;
+
+                default:
+
+                    System.out.println("Invalid Choice");
+            }
+
+        } while(choice != 5);
+    }
+}

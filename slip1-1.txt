@@ -1,0 +1,235 @@
+//CreateEmployee 
+package FileHandling;
+
+import java.io.*;
+import java.util.Scanner;
+
+public class CreateEmployee{
+    public static void main(String[] args) {
+
+        try {
+
+            File file = new File("employee.txt");
+
+            if(file.createNewFile()) {
+                System.out.println("File created: " + file.getName());
+            }
+
+            Scanner sc = new Scanner(System.in);
+
+            System.out.print("Enter Employee ID: ");
+            int id = sc.nextInt();
+            sc.nextLine();
+
+            // Check duplicate ID
+            boolean exists = false;
+
+            Scanner reader = new Scanner(file);
+
+            while(reader.hasNextLine()) {
+
+                String line = reader.nextLine();
+
+                if(line.startsWith("Employee ID:")) {
+
+                    int existingId =
+                            Integer.parseInt(line.substring(13).trim());
+
+                    if(existingId == id) {
+                        exists = true;
+                        break;
+                    }
+                }
+            }
+
+            reader.close();
+
+            if(exists) {
+                System.out.println("Employee ID already exists.");
+            }
+            else {
+
+                FileWriter writer =
+                        new FileWriter(file, true);
+
+                System.out.print("Enter Employee Name: ");
+                String name = sc.nextLine();
+
+                System.out.print("Enter Employee Salary: ");
+                float salary = sc.nextFloat();
+                sc.nextLine();
+
+                System.out.print("Enter Department: ");
+                String dept = sc.nextLine();
+
+                writer.write("\nEmployee ID: " + id + "\n");
+                writer.write("Employee Name: " + name + "\n");
+                writer.write("Employee Salary: " + salary + "\n");
+                writer.write("Department: " + dept + "\n");
+
+                writer.close();
+
+                System.out.println(
+                        "Employee data written successfully.");
+            }
+
+        } catch(IOException e) {
+            System.out.println("Error occurred.");
+        }
+    }
+}
+
+
+// Read
+
+
+package FileHandling;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
+public class ReadEmployee {
+    public static void main(String[] args) {
+
+        try {
+            File file = new File("employee.txt");
+
+            Scanner reader = new Scanner(file);
+
+            System.out.println("\nEmployee Records\n");
+
+            while(reader.hasNextLine()) {
+                String data = reader.nextLine();
+                System.out.println(data);
+            }
+
+            reader.close();
+
+        } catch(FileNotFoundException e) {
+            System.out.println("File not found.");
+        }
+    }
+}
+
+
+//Delete
+
+
+package FileHandling;
+
+import java.io.*;
+import java.util.Scanner;
+
+class DeleteEmployee
+{
+    public static void main(String args[])
+    {
+        Scanner sc = new Scanner(System.in);
+
+        try
+        {
+            File inputFile = new File("employee.txt");
+            File tempFile = new File("temp.txt");
+
+            BufferedReader br = new BufferedReader(
+                    new FileReader(inputFile));
+
+            BufferedWriter bw = new BufferedWriter(
+                    new FileWriter(tempFile));
+
+            System.out.println("Enter Employee ID to Delete:");
+            int deleteId = sc.nextInt();
+
+            String line;
+
+            while((line = br.readLine()) != null)
+            {
+                if(line.startsWith("Employee ID:"))
+                {
+                    int id = Integer.parseInt(
+                            line.substring(13).trim());
+
+                    String name = br.readLine();
+                    String salary = br.readLine();
+                    String dept = br.readLine();
+
+                    if(id != deleteId)
+                    {
+                        bw.write(line);
+                        bw.newLine();
+
+                        bw.write(name);
+                        bw.newLine();
+
+                        bw.write(salary);
+                        bw.newLine();
+
+                        bw.write(dept);
+                        bw.newLine();
+                    }
+                }
+            }
+
+            br.close();
+            bw.close();
+
+            inputFile.delete();
+            tempFile.renameTo(inputFile);
+
+            System.out.println("Record Deleted");
+        }
+        catch(Exception e)
+        {
+            System.out.println(e);
+        }
+    }
+} 
+
+
+// Write/Update 
+
+
+package FileHandling;
+
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
+
+public class UpdateEmployee {
+    public static void main(String[] args) {
+
+        try {
+
+            FileWriter writer = new FileWriter("employee.txt", true);
+
+            Scanner sc = new Scanner(System.in);
+
+            System.out.print("Enter Employee ID: ");
+            int id = sc.nextInt();
+            sc.nextLine();
+
+            System.out.print("Enter Employee Name: ");
+            String name = sc.nextLine();
+
+            System.out.print("Enter Employee Salary: ");
+            float salary = sc.nextFloat();
+            sc.nextLine();
+
+            System.out.print("Enter Department: ");
+            String dept = sc.nextLine();
+
+            writer.write("\nEmployee ID: " + id + "\n");
+            writer.write("Employee Name: " + name + "\n");
+            writer.write("Employee Salary: " + salary + "\n");
+            writer.write("Department: " + dept + "\n");
+
+            writer.close();
+
+            System.out.println("New employee data added.");
+
+        } catch(IOException e) {
+            System.out.println("Error writing to file.");
+        }
+    }
+}

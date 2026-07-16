@@ -1,0 +1,95 @@
+/*Implement a Java Program for multithreading (Synchronization): Create thread for
+Withdraw & Deposit tasks for Bank Account, display the current balance also.*/
+
+// Java Program for Multithreading with Synchronization
+// Bank Account Deposit and Withdraw Example
+
+class BankAccount {
+    private int balance = 1000; // Initial Balance
+
+    // Synchronized method for deposit
+    public synchronized void deposit(int amount) {
+        System.out.println("Depositing Amount: " + amount);
+
+        balance = balance + amount;
+
+        System.out.println("Amount Deposited Successfully");
+        System.out.println("Current Balance after Deposit: " + balance);
+        System.out.println("--------------------------------");
+    }
+
+    // Synchronized method for withdraw
+    public synchronized void withdraw(int amount) {
+        System.out.println("Withdrawing Amount: " + amount);
+
+        if (balance >= amount) {
+            balance = balance - amount;
+
+            System.out.println("Amount Withdrawn Successfully");
+            System.out.println("Current Balance after Withdrawal: " + balance);
+        } else {
+            System.out.println("Insufficient Balance");
+            System.out.println("Current Balance: " + balance);
+        }
+
+        System.out.println("--------------------------------");
+    }
+
+    // Method to display current balance
+    public synchronized void displayBalance() {
+        System.out.println("Final Current Balance: " + balance);
+    }
+}
+
+// Deposit Thread
+class DepositThread extends Thread {
+    BankAccount account;
+
+    DepositThread(BankAccount account) {
+        this.account = account;
+    }
+
+    public void run() {
+        account.deposit(500);
+    }
+}
+
+// Withdraw Thread
+class WithdrawThread extends Thread {
+    BankAccount account;
+
+    WithdrawThread(BankAccount account) {
+        this.account = account;
+    }
+
+    public void run() {
+        account.withdraw(700);
+    }
+}
+
+// Main Class
+public class BankSynchronization {
+    public static void main(String[] args) {
+
+        BankAccount account = new BankAccount();
+
+        // Creating Threads
+        DepositThread t1 = new DepositThread(account);
+        WithdrawThread t2 = new WithdrawThread(account);
+
+        // Starting Threads
+        t1.start();
+        t2.start();
+
+        // Waiting for threads to complete
+        try {
+            t1.join();
+            t2.join();
+        } catch (InterruptedException e) {
+            System.out.println(e);
+        }
+
+        // Display Final Balance
+        account.displayBalance();
+    }
+}

@@ -1,0 +1,100 @@
+/*Create a hierarchy of Employee, Manager, Sales Manager, they should have the
+following functionality:
+A. Employee: Display name, date of birth and id of Employee.
+B. Manager: Display all above information with salary drawn.
+C. Sales Manager: Display all above information and commission if applicable. */
+
+
+   import java.util.Scanner;
+
+class Employee
+{
+    int id;
+    String name, dob;
+
+    void getEmployee()
+    {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("Enter Employee ID:");
+        id = sc.nextInt();
+        sc.nextLine();
+
+        System.out.println("Enter Employee Name:");
+        name = sc.nextLine();
+
+        System.out.println("Enter Date of Birth:");
+        dob = sc.nextLine();
+    }
+
+    void displayEmployee()
+    {
+        System.out.println("\n----- EMPLOYEE DETAILS -----");
+
+        System.out.println("Employee ID: " + id);
+        System.out.println("Employee Name: " + name);
+        System.out.println("Date of Birth: " + dob);
+    }
+}
+
+class Manager extends Employee
+{
+    double salary;
+
+    void getManager()
+    {
+        getEmployee();
+
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("Enter Salary:");
+        salary = sc.nextDouble();
+    }
+
+    void displayManager()
+    {
+        displayEmployee();
+
+        System.out.println("\n----- MANAGER DETAILS -----");
+
+        System.out.println("Salary: " + salary);
+    }
+}
+
+class SalesManager extends Manager
+{
+    double commission;
+
+    void getSalesManager()
+    {
+        getManager();
+
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("Enter Commission:");
+        commission = sc.nextDouble();
+    }
+
+    void displaySalesManager()
+    {
+        displayManager();
+
+        System.out.println(
+        "\n----- SALES MANAGER DETAILS -----");
+
+        System.out.println(
+        "Commission: " + commission);
+    }
+}
+
+public class EmployeeHierarchy
+{
+    public static void main(String args[])
+    {
+        SalesManager s = new SalesManager();
+
+        s.getSalesManager();
+
+        s.displaySalesManager();
+    }
+}

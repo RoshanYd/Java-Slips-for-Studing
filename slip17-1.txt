@@ -1,0 +1,64 @@
+/*
+Implement a Java Program for creating a digital clock using AWT, Swing & Date
+class.
+*/
+
+import java.awt.*;
+import java.awt.event.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import javax.swing.*;
+
+public class DigitalClock extends JFrame
+implements ActionListener
+{
+    private JLabel clockLabel;
+
+    private Timer timer;
+
+    public DigitalClock()
+    {
+        setLayout(new FlowLayout());
+
+        clockLabel =
+        new JLabel("", SwingConstants.CENTER);
+
+        clockLabel.setFont(
+        new Font("Arial", Font.BOLD, 30));
+
+        add(clockLabel);
+
+        timer = new Timer(1000, this);
+
+        timer.start();
+
+        setTitle("Digital Clock");
+
+        setDefaultCloseOperation(
+        EXIT_ON_CLOSE);
+
+        setSize(300, 150);
+
+        setLocationRelativeTo(null);
+
+        setVisible(true);
+    }
+
+    public void actionPerformed(ActionEvent e)
+    {
+        Date date = new Date();
+
+        SimpleDateFormat format =
+        new SimpleDateFormat("hh:mm:ss a");
+
+        String clockText =
+        format.format(date);
+
+        clockLabel.setText(clockText);
+    }
+
+    public static void main(String[] args)
+    {
+        new DigitalClock();
+    }
+}
